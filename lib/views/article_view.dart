@@ -18,12 +18,14 @@ final Completer<WebViewController> _completer = Completer<WebViewController>();
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(" The Guardian"),
+            Text(" The Guardian",  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
             Text(" News" , style: TextStyle(
-                color: Colors.blue
+              color: Colors.white,
+
             ),),
           ],
         ),

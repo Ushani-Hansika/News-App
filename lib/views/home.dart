@@ -6,6 +6,8 @@ import 'package:flutter_news/models/artical_model.dart';
 import 'package:flutter_news/models/category_model.dart';
 import 'package:flutter_news/views/article_view.dart';
 
+import 'category_view.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -38,15 +40,28 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(" The Guardian"),
+            Text("The Guardian" , style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
             Text(" News" , style: TextStyle(
-              color: Colors.blue
+              color: Colors.white,
+
             ),),
-          ],
+
+
+          ]
         ),
+
+        actions: <Widget>[
+
+          TextButton.icon(
+              icon: Icon(Icons.person, color: Colors.black,),
+              label: Text('logout'),
+            )
+        ],
+
         centerTitle: true,
       ),
       body: _loading ? Center(
@@ -103,28 +118,30 @@ class _HomeState extends State<Home> {
 }
 
 class CategoryTile extends StatelessWidget {
-  final imageURL, categoryname;
+  final String imageURL, categoryname;
   CategoryTile({this.imageURL, this.categoryname});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-
+           Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryNews(
+             categoty: categoryname.toLowerCase(),
+           )));
       },
       child: Container(
-        margin: EdgeInsets.only(right: 15),
+        margin: EdgeInsets.only(right: 15,top: 10),
         child: Stack(
           children:<Widget> [
             ClipRRect(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(30),
                 child: CachedNetworkImage(
-                  imageUrl: imageURL, width:120,height:60, fit: BoxFit.cover,)),
+                  imageUrl: imageURL, width:110,height:50, fit: BoxFit.cover,)),
             Container(
               alignment: Alignment.center,
               width:120,height:60,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(15),
 
               ),
 
@@ -157,17 +174,17 @@ class BlogTile extends StatelessWidget {
         child: Column(
           children: <Widget>[
             ClipRRect(
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(10),
                 child: Image.network(imageURL)),
             SizedBox(height: 10,),
             Text(title, style: TextStyle(
-              fontSize: 20,
+              fontSize: 15,
               color: Colors.black,
               fontWeight: FontWeight.w800
             ),),
             SizedBox(height: 10,),
             Text(desc, style: TextStyle(
-              fontSize: 15, color: Colors.blue
+              fontSize: 12, color: Colors.blue
             ),),
           ],
         ),
