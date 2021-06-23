@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_news/helper/data.dart';
 import 'package:flutter_news/helper/news.dart';
 import 'package:flutter_news/models/artical_model.dart';
 import 'package:flutter_news/models/category_model.dart';
+import 'package:flutter_news/views/article_view.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -76,14 +78,20 @@ class _HomeState extends State<Home> {
               //blogs
 
               Container(
+                padding: EdgeInsets.only(top: 10),
                 child: ListView.builder(
                     itemCount: articles.length,
                     shrinkWrap: true,
+                    physics: ClampingScrollPhysics(
+                      
+                    ),
                     itemBuilder: (context, index){
                       return BlogTile(
                           imageURL: articles[index].urlToImage,
                           title: articles[index].title,
-                          desc: articles[index].description);
+                          desc: articles[index].description,
+                          url: articles[index].url,
+                           );
                     }),
               )
             ],
@@ -102,7 +110,7 @@ class CategoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-          
+
       },
       child: Container(
         margin: EdgeInsets.only(right: 15),
@@ -110,7 +118,8 @@ class CategoryTile extends StatelessWidget {
           children:<Widget> [
             ClipRRect(
                 borderRadius: BorderRadius.circular(5),
-                child: Image.network(imageURL, width:120,height:60, fit: BoxFit.cover,)),
+                child: CachedNetworkImage(
+                  imageUrl: imageURL, width:120,height:60, fit: BoxFit.cover,)),
             Container(
               alignment: Alignment.center,
               width:120,height:60,
@@ -133,17 +142,35 @@ class CategoryTile extends StatelessWidget {
 }
 
 class BlogTile extends StatelessWidget {
-  final String imageURL, title, desc;
-  BlogTile({@required this.imageURL,@required this.title, @required this.desc});
+  final String imageURL, title, desc, url;
+  BlogTile({@required this.imageURL,@required this.title, @required this.desc, @required this.url});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Image.network(imageURL),
-          Text(title),
-          Text(desc),
-        ],
+    return GestureDetector(
+      onTap: (){
+           Navigator.push(context, MaterialPageRoute(builder: (context) => ArticalView(
+            blogURL: url,
+           )));
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 15),
+        child: Column(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+                child: Image.network(imageURL)),
+            SizedBox(height: 10,),
+            Text(title, style: TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+              fontWeight: FontWeight.w800
+            ),),
+            SizedBox(height: 10,),
+            Text(desc, style: TextStyle(
+              fontSize: 15, color: Colors.blue
+            ),),
+          ],
+        ),
       ),
     );
   }
